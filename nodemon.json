@@ -1,0 +1,9 @@
+{
+    "watch": [
+        "dist"
+    ],
+    "ignore": [
+        "node_modules"
+    ],
+    "ext": "js,json"
+}
