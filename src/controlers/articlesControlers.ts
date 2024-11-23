@@ -1,38 +1,70 @@
 import { Articles } from "../types/articles"
-import {v4 as uuidv4} from "uuid"
-import { Request, Response }  from "express"
+import { v4 as uuidv4 } from "uuid"
+import { Request, Response } from "express"
 import { db } from "../utils/db"
 
 
 
-export const createArticles = (req : Request, res : Response) => {
-    const {article , title , imageUrl , likes} : Articles = req.body
+export const createArticles = (req: Request, res: Response) => {
+    const { article, title, imageUrl, likes }: Articles = req.body
 
     const data = {
-        id : uuidv4(),
+        id: uuidv4(),
         title,
         article,
         likes,
         imageUrl,
     }
 
-    db.push( data )
+    db.push(data)
 
-    res.status(201).send({article , title , imageUrl , likes})
+    res.status(201).send({ article, title, imageUrl, likes })
 }
 
 
-export const deleteArticles = (req : Request, res : Response) => {
-    const {id}  = req.params;
+export const updateArticles = (req: Request, res: Response) => {
+    try {
+        const { id, article, title, imageUrl, likes }: Articles = req.body
 
-    const item = db.findIndex( (item : Articles) => item.id === id);
- 
-    if (item != -1){
-        db.splice(item, 1);
-        res.status(201).send("Item removido com sucesso!");
-        return
+        const newArticle = {
+            id,
+            title,
+            article,
+            likes,
+            imageUrl,
+        }
+
+        const oldArticle = db.findIndex((item: Articles) => item.id === id);
+
+        if (oldArticle !== -1) {
+            db.splice(oldArticle, 1);
+            db.push(newArticle),
+                res.status(200).send("Item atualizado com sucesso")
+            return
+        }
+
+        res.status(404).send("Item inexistente")
+    } catch (error) {
+        res.status(500).send(error)
     }
+}
 
-    res.status(400).send("Id não encontrado");
 
+export const deleteArticles = (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        const item = db.findIndex((item: Articles) => item.id === id);
+
+        if (item != -1) {
+            db.splice(item, 1);
+            res.status(200).send("Item removido com sucesso!");
+            return
+        }
+
+        res.status(400).send("Id não encontrado");
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }

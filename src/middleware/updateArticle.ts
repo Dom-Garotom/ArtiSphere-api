@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { createArticleSchema } from "../schemas/articlesSchema"
+import { articleSchema } from "../schemas/articlesSchema"
 import { z } from "zod";
 
-export const middlewareCreateArticle = (req: Request, res: Response, next: NextFunction) => {
+export const middlewareUpdateArticle = (req: Request, res: Response, next: NextFunction) => {
     try {
-        createArticleSchema.parse(req.body)
+        articleSchema.parse(req.body)
         next();
     } catch (error){
         
