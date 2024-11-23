@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { db } from '../utils/db';
 import { middlewareCreateArticle } from '../middleware/createArticle';
 import { createArticles, deleteArticles, updateArticles } from '../controlers/articlesControlers';
