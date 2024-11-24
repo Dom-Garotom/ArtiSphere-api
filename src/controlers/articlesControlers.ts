@@ -2,10 +2,12 @@ import { Articles } from "../types/articles"
 import { v4 as uuidv4 } from "uuid"
 import { Request, Response } from "express"
 import { db } from "../utils/db"
+import { dataBase } from "../db/config/config"
+import { articleModel } from "../db/models/articleModels"
 
 
 
-export const createArticles = (req: Request, res: Response) => {
+export const createArticles = async  (req: Request, res: Response) => {
     const { article, title, imageUrl, likes }: Articles = req.body
 
     const data = {
@@ -17,6 +19,8 @@ export const createArticles = (req: Request, res: Response) => {
     }
 
     db.push(data)
+
+    await articleModel.create(data)
 
     res.status(201).send({ article, title, imageUrl, likes })
 }
