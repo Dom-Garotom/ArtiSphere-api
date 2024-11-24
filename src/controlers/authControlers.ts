@@ -2,24 +2,33 @@ import { Request, Response } from "express";
 import { User } from "../types/user";
 import { dbUser } from "../utils/db"
 import { v4 as uuidv4 } from "uuid"
+import { gerarHash, verificarSenha } from "../utils/hash";
 
-export const registerUser = (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response) => {
     try {
         const { name, email, senha }: User = req.body;
+        const hash = await gerarHash(senha);
+        const password = hash
 
-        const data = {
-            id: uuidv4(),
-            name,
-            email,
-            senha
+        if (password) {
+            const data = {
+                id: uuidv4(),
+                name,
+                email,
+                senha: password
+            }
+
+            dbUser.push(data);
+
+            res.status(201).json({
+                success: true,
+                mensage: "Usuário registrado com sucesso"
+            })
+            return;
         }
 
-        dbUser.push(data);
+        throw new Error("Não foi possivel gerar o hash");
 
-        res.status(201).json({
-            success: true,
-            mensage: "Usuário registrado com sucesso"
-        })
 
     } catch (errr) {
         res.status(500).send(errr)
@@ -27,27 +36,31 @@ export const registerUser = (req: Request, res: Response) => {
 }
 
 
-export const loginUser = (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response) => {
     try {
         const { email, senha }: User = req.body;
 
-        const data = dbUser.find((item: User) => item.email === email && item.senha === senha)
+        const user = dbUser.find((item: User) => item.email === email)
 
-        if (data) {
-            res.status(200).json({
-                "success": true,
-                "message": "Usuário válido"
-            })
-            return
+        if (!user) {
+            throw new Error("Usuário ou senha inválidos.");
         }
 
-        throw new Error;
+        const isValid = await verificarSenha(senha, user?.senha)
 
+        if (!isValid) {
+            throw new Error("Usuário ou senha inválidos.");
+        }
 
-    } catch (errr) {
+        res.status(200).json({
+            "success": true,
+            "message": "Usuário válido"
+        })
+
+    } catch (error: any) {
         res.status(400).json({
             "success": false,
-            "message": "Usuário ou senha inválidos."
+            "message": error.message || "Erro ao tentar fazer login"
         })
     }
 }
