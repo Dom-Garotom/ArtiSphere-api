@@ -2,7 +2,7 @@ import { DataTypes , UUIDV4 } from "sequelize";
 import { dataBase } from "../config/config";
 
 
-export const articleModel = dataBase.define("article", {
+export const articleDb = dataBase.define("article", {
     id: {
         type : DataTypes.UUID,
         defaultValue: UUIDV4,

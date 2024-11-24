@@ -1,5 +1,5 @@
 import { dataBase } from "../db/config/config";
-import { articleModel } from "../db/models/articleModels";
+import { articleDb } from "../db/models/articleModels";
 
 const conexaoComBancoDeDados = async () => {
     try {

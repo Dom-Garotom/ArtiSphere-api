@@ -1,18 +1,15 @@
 import express from 'express';
-import { db } from '../utils/db';
 import { middlewareCreateArticle } from '../middleware/createArticle';
-import { createArticles, deleteArticles, updateArticles } from '../controlers/articlesControlers';
+import { createArticles, deleteArticles, getArticles, updateArticles } from '../controlers/articlesControlers';
 import { middlewareUpdateArticle } from '../middleware/updateArticle';
 
 const router = express.Router()
 
-router.get("/", (req, res) => {
-    res.status(200).send(db)
-})
+router.get("/", getArticles)
 
 router.post("/create", middlewareCreateArticle , createArticles )
 
-router.put("/update", middlewareUpdateArticle, updateArticles  )
+router.put("/update/:id", middlewareUpdateArticle, updateArticles  )
 
 router.delete("/delete/:id", deleteArticles )
 
