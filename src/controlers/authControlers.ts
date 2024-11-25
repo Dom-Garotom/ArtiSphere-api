@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
+import UserDB from "../db/models/userModels";
 import { User } from "../types/user";
-import { dbUser } from "../utils/db"
 import { v4 as uuidv4 } from "uuid"
 import { gerarHash, verificarSenha } from "../utils/hash";
 import { gerarToken } from "../utils/token";
@@ -9,7 +9,7 @@ export const registerUser = async (req: Request, res: Response) => {
     try {
         const { name, email, senha }: User = req.body;
         const hash = await gerarHash(senha);
-        const password = hash 
+        const password = hash;
 
         if (!password) {
             throw new Error("Não foi possivel gerar o hash");
@@ -22,18 +22,18 @@ export const registerUser = async (req: Request, res: Response) => {
             senha: password
         }
 
-        dbUser.push(data);
+        UserDB.create(data)
 
-        const token = gerarToken(data)
+        const token = gerarToken(data.id)
 
         res.status(201).json({
             success: true,
             mensage: "Usuário registrado com sucesso",
-            token : token
+            token: token
         })
 
     } catch (errr) {
-        res.status(500).send(errr)
+        res.status(500).json({ menssage: errr })
     }
 }
 
@@ -42,19 +42,23 @@ export const loginUser = async (req: Request, res: Response) => {
     try {
         const { email, senha }: User = req.body;
 
-        const user = dbUser.find((item: User) => item.email === email)
+       const user = await UserDB.findOne({
+            where : { email : email},
+        });
 
+        console.log(user)
+  
         if (!user) {
             res.status(400).json({
                 "success": false,
                 "message": "Usuário ou senha inválido"
             })
             return
-        } 
+        }
 
-        const isValid = await verificarSenha(senha, user?.senha)
+        const isValid = await verificarSenha(senha, user.senha) 
 
-        if (!isValid) {
+        if (!isValid) { 
             res.status(400).json({
                 "success": false,
                 "message": "Usuário ou senha inválido"
@@ -69,7 +73,7 @@ export const loginUser = async (req: Request, res: Response) => {
         })
 
     } catch (error: any) {
-        res.status(400).json({
+        res.status(500).json({
             "success": false,
             "message": error.message || "Erro ao tentar fazer login"
         })

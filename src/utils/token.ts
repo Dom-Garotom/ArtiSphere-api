@@ -4,10 +4,10 @@ import { User } from "../types/user"
 
 dotenv.config()
 
-export const gerarToken = ( data : User) => {
+export const gerarToken = ( id : string) => {
 
     const payload = {
-        sub : data.id,
+        sub : id,
         iss: "ArtiSphere",
         aud: "ArtiSphere",
         iat: Math.floor(Date.now() / 1000),
