@@ -51,8 +51,8 @@ export const updateArticles = async (req: Request, res: Response) => {
         return
 
 
-    } catch (error) {
-        res.status(500).send(error)
+    } catch (error : any) {
+        res.status(500).send(error.message)
     }
 }
 
@@ -72,7 +72,7 @@ export const deleteArticles = async (req: Request, res: Response) => {
 
         res.status(200).json({ message: "Item removido com sucesso!" })
         return
-    } catch (error) {
-        res.status(500).send(error)
+    } catch (error : any) {
+        res.status(500).send(error.message)
     }
 }
