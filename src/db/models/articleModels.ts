@@ -11,7 +11,7 @@ export const articleDb = dataBase.define("article", {
 
     title: {
         type: DataTypes.TEXT,
-        allowNull: true,
+        allowNull: false,
     },
 
     article: {
