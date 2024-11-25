@@ -5,8 +5,8 @@ interface ArticleDbAtributtes {
     id: string;
     title: string;
     article: string;
-    likes: string;
-    imageUrl: string;
+    likes: number;
+    imageUrl?: string;
     createAt?: Date;
     updateAt?: Date;
 }
@@ -15,7 +15,7 @@ class ArticleDb extends Model<ArticleDbAtributtes> implements ArticleDbAtributte
     public id !: string;
     public title!: string;
     public article!: string;
-    public likes!: string;
+    public likes!: number;
     public imageUrl!: string;
     public readonly createAt?: Date;
     public readonly updateAt?: Date;

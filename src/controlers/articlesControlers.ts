@@ -1,11 +1,11 @@
 import { Articles } from "../types/articles"
 import { v4 as uuidv4 } from "uuid"
 import { Request, Response } from "express"
-import { articleDb } from "../db/models/articleModels"
+import ArticleDb from "../db/models/articleModels";
 
 
 export const getArticles = async (req: Request, res: Response) => {
-    const db = await articleDb.findAll();
+    const db = await ArticleDb.findAll();
     res.status(200).json(db)
 }
 
@@ -20,7 +20,7 @@ export const createArticles = async (req: Request, res: Response) => {
         imageUrl,
     }
 
-    await articleDb.create(data)
+    await ArticleDb.create(data)
 
     res.status(201).json({ message: "Item criado com sucesso" })
 }
@@ -31,13 +31,13 @@ export const updateArticles = async (req: Request, res: Response) => {
         const {id} = req.params
         const { article, title, imageUrl, likes }: Articles = req.body
 
-        const existingArticle = await articleDb.findByPk(id)
+        const existingArticle = await ArticleDb.findByPk(id)
 
         if (!existingArticle) {
             res.status(404).json({ message: "Item inexistente" })
         }
 
-        const [update] = await articleDb.update(
+        const [update] = await ArticleDb.update(
             { article, title, imageUrl, likes },
             { where: { id } }
         )
@@ -61,7 +61,7 @@ export const deleteArticles = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
-        const existingArticle = await articleDb.findByPk(id)
+        const existingArticle = await ArticleDb.findByPk(id)
 
         if (!existingArticle) {
             res.status(404).json({ message: "Item inexistente" })
