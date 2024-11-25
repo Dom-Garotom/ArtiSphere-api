@@ -22,6 +22,14 @@ export const registerUser = async (req: Request, res: Response) => {
             senha: password
         }
 
+        const registerEmail = await UserDB.findOne({
+            where: { email : email}
+        })
+
+        if (registerEmail){
+            throw new Error("Esse email já está sendo ultilizado");
+        }
+
         UserDB.create(data)
 
         const token = gerarToken(data.id)
@@ -32,8 +40,8 @@ export const registerUser = async (req: Request, res: Response) => {
             token: token
         })
 
-    } catch (errr) {
-        res.status(500).json({ menssage: errr })
+    } catch (error : any) {
+        res.status(500).json({ menssage: error.message })
     }
 }
 
@@ -42,11 +50,10 @@ export const loginUser = async (req: Request, res: Response) => {
     try {
         const { email, senha }: User = req.body;
 
-       const user = await UserDB.findOne({
+        const user = await UserDB.findOne({
             where : { email : email},
         });
 
-        console.log(user)
   
         if (!user) {
             res.status(400).json({
