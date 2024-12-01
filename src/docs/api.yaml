@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: Artisphere API
+  description: API para gerenciamento de artigos.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000
+    description: Servidor local para desenvolvimento
+paths:
+  /articles:
+    get:
+      summary: Listar todos os artigos
+      description: Retorna todos os artigos armazenados no banco de dados.
+      responses:
+        '200':
+          description: Lista de artigos retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: ID do artigo.
+                    title:
+                      type: string
+                      description: Título do artigo.
+                    article:
+                      type: string
+                      description: Conteúdo do artigo.
+                    likes:
+                      type: integer
+                      description: Número de curtidas.
+                    imageUrl:
+                      type: string
+                      description: URL da imagem associada ao artigo.
+
+    post:
+      summary: Criar um novo artigo
+      description: Adiciona um novo artigo ao banco de dados.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Título do artigo.
+                  example: "Meu novo artigo"
+                article:
+                  type: string
+                  description: Conteúdo do artigo.
+                  example: "Este é o conteúdo do artigo."
+                likes:
+                  type: integer
+                  description: Número inicial de curtidas.
+                  example: 0
+                imageUrl:
+                  type: string
+                  description: URL da imagem associada ao artigo.
+                  example: "https://example.com/image.jpg"
+      responses:
+        '201':
+          description: Artigo criado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Item criado com sucesso"
+  
+  /articles/{id}:
+    put:
+      summary: Atualizar um artigo
+      description: Atualiza os detalhes de um artigo existente.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do artigo a ser atualizado.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Título do artigo.
+                  example: "Título atualizado"
+                article:
+                  type: string
+                  description: Conteúdo do artigo.
+                  example: "Conteúdo atualizado do artigo."
+                likes:
+                  type: integer
+                  description: Número de curtidas.
+                  example: 42
+                imageUrl:
+                  type: string
+                  description: URL da imagem associada ao artigo.
+                  example: "https://example.com/new-image.jpg"
+      responses:
+        '200':
+          description: Artigo atualizado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Artigo atualizado com sucesso"
+        '404':
+          description: Artigo não encontrado.
+        '400':
+          description: Erro ao atualizar o artigo.
+        '500':
+          description: Erro interno do servidor.
+
+    delete:
+      summary: Remover um artigo
+      description: Remove um artigo pelo ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do artigo a ser removido.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Artigo removido com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Item removido com sucesso!"
+        '404':
+          description: Artigo não encontrado.
+        '500':
+          description: Erro interno do servidor.
