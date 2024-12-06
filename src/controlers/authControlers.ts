@@ -74,9 +74,12 @@ export const loginUser = async (req: Request, res: Response) => {
             return
         }
 
+        const token = gerarToken(user.id)
+
         res.status(200).json({
             "success": true,
-            "message": "Usuário válido"
+            "message": "Usuário válido",
+            token: token
         })
 
     } catch (error: any) {
