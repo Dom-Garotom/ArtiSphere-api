@@ -7,6 +7,6 @@ import { middlewareVerificarToken } from '../middleware/verifyToken';
 const RoutesAuth = express.Router();
 
 RoutesAuth.post( "/register" , middlewareRegisterUser , registerUser);
-RoutesAuth.post( "/login" , middlewareVerificarToken  , middlewareLoginUser , loginUser);
+RoutesAuth.post( "/login" , middlewareLoginUser , loginUser);
 
 export default RoutesAuth;
