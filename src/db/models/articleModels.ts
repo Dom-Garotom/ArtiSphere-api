@@ -14,8 +14,8 @@ interface ArticleDbAtributtes {
 }
 
 class ArticleDb extends Model<ArticleDbAtributtes> implements ArticleDbAtributtes {
-    public id !: string;
-    public person_id !: string;
+    public readonly id !: string;
+    public readonly person_id !: string;
     public title!: string;
     public article!: string;
     public num_likes!: number;
