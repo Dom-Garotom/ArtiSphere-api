@@ -7,7 +7,7 @@ interface ArticleDbAtributtes {
     title: string;
     article: string;
     num_likes: number;
-    num_comentarios: number;
+    num_comments: number;
     imageUrl?: string;
     createAt?: Date;
     updateAt?: Date;
@@ -19,7 +19,7 @@ class ArticleDb extends Model<ArticleDbAtributtes> implements ArticleDbAtributte
     public title!: string;
     public article!: string;
     public num_likes!: number;
-    public num_comentarios!: number;
+    public num_comments!: number;
     public imageUrl!: string;
     public readonly createAt?: Date;
     public readonly updateAt?: Date;
@@ -55,7 +55,7 @@ ArticleDb.init({
         defaultValue: 0
     },
 
-    num_comentarios: {
+    num_comments: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0
