@@ -36,3 +36,5 @@ ArticleTagsDB.init({
     sequelize: dataBase,
     tableName: "articles_tags"
 })
+
+export default ArticleTagsDB;
