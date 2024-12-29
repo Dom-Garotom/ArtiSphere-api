@@ -4,11 +4,13 @@ import RoutesAuth from "./rotas/auth";
 import conexaoComBancoDeDados from './utils/conexao';
 import swaggerUi from "swagger-ui-express"
 import YAML from "yamljs"
+import RoutesTags from "./rotas/tags";
 
-const server = express()
-server.use(express.json())
-server.use("/articles", RoutesArticles)
+const server = express();
+server.use(express.json());
+server.use("/articles", RoutesArticles);
 server.use("/", RoutesAuth);
+server.use("/" , RoutesTags);
 
 
 // docs api
