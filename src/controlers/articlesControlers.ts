@@ -10,17 +10,21 @@ export const getArticles = async (req: Request, res: Response) => {
 }
 
 export const createArticles = async (req: Request, res: Response) => {
-    const { article, title, imageUrl, likes }: Articles = req.body
+    const { id } = req.params
+    const { article, title, imageUrl, num_likes , num_comments }: Articles = req.body
 
     const data = {
         id: uuidv4(),
+        person_id : id,
         title,
         article,
-        likes,
+        num_likes,
+        num_comments,
         imageUrl,
     }
 
     await ArticleDb.create(data)
+    console.log(data);
 
     res.status(201).json({ message: "Item criado com sucesso" })
 }
@@ -29,7 +33,7 @@ export const createArticles = async (req: Request, res: Response) => {
 export const updateArticles = async (req: Request, res: Response) => {
     try {
         const {id} = req.params
-        const { article, title, imageUrl, likes }: Articles = req.body
+        const { article, title, imageUrl, num_likes }: Articles = req.body
 
         const existingArticle = await ArticleDb.findByPk(id)
 
@@ -38,7 +42,7 @@ export const updateArticles = async (req: Request, res: Response) => {
         }
 
         const [update] = await ArticleDb.update(
-            { article, title, imageUrl, likes },
+            { article, title, imageUrl, num_likes },
             { where: { id } }
         )
 
