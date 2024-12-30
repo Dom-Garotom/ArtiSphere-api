@@ -4,7 +4,7 @@ import { getTags } from '../controlers/tagsControlers';
 
 const RoutesTags = express.Router();
 
-RoutesTags.get("tags" , getTags)
-RoutesTags.post("tags" , createTags)
+RoutesTags.get("/tags" , getTags)
+RoutesTags.post("/tags" , createTags)
 
 export default RoutesTags;

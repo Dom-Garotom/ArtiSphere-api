@@ -3,10 +3,20 @@ import { v4 as uuidv4 } from "uuid"
 import { Request, Response } from "express"
 import ArticleDb from "../db/models/articleModels";
 import ArticleTagsDB from "../db/models/articlesTagsModels";
+import TagsDB from "../db/models/tagsModels";
 
 
 export const getArticles = async (req: Request, res: Response) => {
-    const db = await ArticleDb.findAll();
+    const db = await ArticleDb.findAll({
+        include: [{
+            model: TagsDB,
+            through: {
+                attributes: []
+            },
+            attributes: ["id", "content", "color"]
+        }]
+    }); 
+
     res.status(200).json(db)
 }
 

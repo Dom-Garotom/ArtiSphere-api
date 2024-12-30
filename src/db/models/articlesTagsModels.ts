@@ -18,20 +18,22 @@ class ArticleTagsDB extends Model<ArticleTagsDBAtributes> implements ArticleTags
 ArticleTagsDB.init({
     id: {
         type: DataTypes.UUID,
-        primaryKey: true,
         allowNull: false,
+        primaryKey: true,
         defaultValue: UUIDV4
     },
 
     article_id: {
-        type: DataTypes.TEXT,
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
         allowNull: false
     },
 
     tags_id: {
-        type: DataTypes.TEXT,
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
         allowNull: false
-    },
+    },   
 }, {
     sequelize: dataBase,
     tableName: "articles_tags"
