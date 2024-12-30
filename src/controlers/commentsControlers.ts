@@ -20,7 +20,7 @@ export const createComments = async (req: Request, res: Response) => {
             status: "sucess",
             message: "Comments create with sucess"
         })
-        
+
     } catch (error) {
         res.status(502).json({
             status: "Error",
@@ -30,3 +30,64 @@ export const createComments = async (req: Request, res: Response) => {
 }
 
 
+export const deleteComments = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        const comment = await CommentsDb.findByPk(id);
+
+        if (!comment) {
+            res.status(404).json({
+                status: "error",
+                message: "Comments not exist"
+            })
+        }
+
+        await comment?.destroy();
+
+        res.status(200).json({
+            status: "sucess",
+            message: "Comments deleted with sucess"
+        })
+
+    } catch (error) {
+        res.status(502).json({
+            status: "Error",
+            message: "Error when delete comment "
+        })
+    }
+}
+
+
+
+
+export const updateComments = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { content }: Comments = req.body
+
+        const comment = await CommentsDb.findByPk(id);
+
+        if (!comment) {
+            res.status(404).json({
+                status: "error",
+                message: "Comments not exist"
+            })
+        }
+
+        await comment?.update({
+            content: content
+        })
+
+        res.status(200).json({
+            status: "sucess",
+            message: "Comments updated with sucess"
+        })
+
+    } catch (error) {
+        res.status(502).json({
+            status: "Error",
+            message: "Error when update comment "
+        })
+    }
+}
