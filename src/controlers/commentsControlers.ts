@@ -2,12 +2,15 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { Comments } from "../types/comments";
 import CommentsDb from "../db/models/commentsModels";
+import { decrementComment, incrementComment } from "../utils/numComments";
 
 
 export const createComments = async (req: Request, res: Response) => {
     try {
         const { article_id, person_id, content }: Comments = req.body;
         const id = uuidv4();
+
+        incrementComment(article_id)
 
         await CommentsDb.create({
             id: id,
@@ -42,6 +45,9 @@ export const deleteComments = async (req: Request, res: Response) => {
                 message: "Comments not exist"
             })
         }
+
+        const articleIdOfComment = comment?.article_id;
+        articleIdOfComment && decrementComment(articleIdOfComment);
 
         await comment?.destroy();
 
