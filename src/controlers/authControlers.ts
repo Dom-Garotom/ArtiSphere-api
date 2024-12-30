@@ -10,13 +10,14 @@ export const registerUser = async (req: Request, res: Response) => {
         const { name, email, senha }: User = req.body;
         const hash = await gerarHash(senha);
         const password = hash;
+        const id =  uuidv4();
 
         if (!password) {
             throw new Error("Não foi possivel gerar o hash");
         }
 
         const data = {
-            id: uuidv4(),
+            id : id,
             name,
             email,
             senha: password
@@ -37,7 +38,8 @@ export const registerUser = async (req: Request, res: Response) => {
         res.status(201).json({
             success: true,
             mensage: "Usuário registrado com sucesso",
-            token: token
+            token: token,
+            "user_id" : id
         })
 
     } catch (error : any) {
@@ -79,7 +81,8 @@ export const loginUser = async (req: Request, res: Response) => {
         res.status(200).json({
             "success": true,
             "message": "Usuário válido",
-            token: token
+            "token" : token,
+            "user_id" : user.id
         })
 
     } catch (error: any) {

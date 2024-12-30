@@ -11,7 +11,7 @@ interface UserDBAttributes {
 }
 
 class UserDB extends Model<UserDBAttributes> implements UserDBAttributes {
-    public id!: string;
+    public readonly id!: string;
     public name!: string;
     public email!: string;
     public senha!: string;

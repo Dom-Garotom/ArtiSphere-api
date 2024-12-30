@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get("/", getArticles)
 
-router.post("/create", middlewareCreateArticle , createArticles )
+router.post("/create/:id", middlewareCreateArticle , createArticles )
 
 router.put("/update/:id", middlewareUpdateArticle, updateArticles  )
 
