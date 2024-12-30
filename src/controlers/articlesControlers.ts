@@ -4,20 +4,32 @@ import { Request, Response } from "express"
 import ArticleDb from "../db/models/articleModels";
 import ArticleTagsDB from "../db/models/articlesTagsModels";
 import TagsDB from "../db/models/tagsModels";
+import CommentsDb from "../db/models/commentsModels";
 
 
 export const getArticles = async (req: Request, res: Response) => {
-    const db = await ArticleDb.findAll({
-        include: [{
-            model: TagsDB,
-            through: {
-                attributes: []
+    try {
+        const db = await ArticleDb.findAll({
+            include: [{
+                model: TagsDB,
+                through: {
+                    attributes: []
+                },
+                attributes: ["id", "content", "color"]
             },
-            attributes: ["id", "content", "color"]
-        }]
-    }); 
+            {
+                model: CommentsDb,
+            }]
+        });
 
-    res.status(200).json(db)
+        res.status(200).json(db)
+    } catch (error) {
+        res.status(502).json({
+            status: "Error",
+            message: "Error when get articles ",
+            erro : error
+        })
+    }
 }
 
 export const createArticles = async (req: Request, res: Response) => {
