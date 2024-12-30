@@ -26,7 +26,8 @@ CommentsDb.init({
     },
 
     article_id: {
-        type: DataTypes.TEXT,
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4, 
         allowNull: false,
     },
 
