@@ -5,7 +5,6 @@ import ArticleDb from "../db/models/articleModels";
 import ArticleTagsDB from "../db/models/articlesTagsModels";
 import TagsDB from "../db/models/tagsModels";
 import CommentsDb from "../db/models/commentsModels";
-import { Sequelize } from "sequelize";
 
 
 export const getArticles = async (req: Request, res: Response) => {
