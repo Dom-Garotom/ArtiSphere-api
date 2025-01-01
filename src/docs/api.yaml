@@ -13,6 +13,7 @@ paths:
 
 
   /articles:
+
     get:
       summary: Listar todos os artigos publicados.
       description: Retorna todos os artigos armazenados no banco de dados.
@@ -69,7 +70,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/responseError"
 
-  /articles/{id}:            
+  /articles/{id}:  
+
     put :
       summary: Atualiza as informações de um artigo
       description: Atualza as informações de um artigo que foi salvo no banco de dados da aplicação.
@@ -183,6 +185,7 @@ paths:
       
 
   /login:
+
     post :
       summary: Loga um usuário na plataforma 
       description: Loga um novo usuário na plataforma
@@ -213,7 +216,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseErrorAuth"
-      
+
+
+
+  /tags:
+
+    get:  
+      summary: Lista todas as tags já criadas 
+      description: Lista todas as tags que foram criadas no banco de dados
+      tags:
+        - Tags
+
+      responses:
+        '200':
+          description: Resposta de sucesso na listagem das tags. 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/tagBody"
+
+        "500": 
+          description : Resposta de erro interno na listagem das tags.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+
+    post:  
+      summary: Criar uma nova tag
+      description: Cria uma nova tag no banco de dados
+      tags:
+        - Tags
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                color:
+                  type: string
+
+      responses:
+        '200':
+          description: Resposta de sucesso na criação da tags. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirm"
+
+
+        "500": 
+          description : Resposta de erro interno na criação da tags. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
 
 
 
@@ -329,3 +392,16 @@ components:
           items:
             type : string
             example: cada item do array deve ser o id da tag escolhida
+
+    tagBody:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        color:
+          type: string
+        content:
+          type: string
+
+ 
