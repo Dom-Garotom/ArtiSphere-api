@@ -372,7 +372,81 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseError"
-              
+
+
+
+  /mostRecent:
+
+    get:
+      summary: Requisição dos artigos mais recentes 
+      description: Requisição que retorna os artigos mais recentes. 
+      tags:
+        - Filter
+
+      responses:
+        '200':
+          description: Resposta de sucesso na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseDefault"
+
+
+        "500": 
+          description : Resposta de erro interno na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+  /mostRelevant:
+
+    get:
+      summary: Requisição dos artigos mais relevantes 
+      description: Requisição que retorna os artigos mais relevantes. 
+      tags:
+        - Filter
+
+      responses:
+        '200':
+          description: Resposta de sucesso na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseDefault"
+
+
+        "500": 
+          description : Resposta de erro interno na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+            
+  /mostPopular:
+
+    get:
+      summary: Requisição dos artigos mais populares 
+      description: Requisição que retorna os artigos mais populares.
+      tags:
+        - Filter
+
+      responses:
+        '200':
+          description: Resposta de sucesso na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseDefault"
+
+
+        "500": 
+          description : Resposta de erro interno na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+            
 
 
 components:
