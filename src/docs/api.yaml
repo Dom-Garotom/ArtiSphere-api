@@ -146,6 +146,74 @@ paths:
                 $ref: "#/components/schemas/responseError"
       
 
+  /register :
+
+    post :
+      summary: Registra um usuário na plataforma 
+      description: Registra um novo usuário na plataforma
+      tags:
+        - Auth
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                senha:
+                  type: string
+                
+      responses:
+        '200':
+          description: Resposta de sucesso na criação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirmAuth"
+
+        "500": 
+          description : Resposta de erro interno na criação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErrorAuth"
+      
+
+  /login:
+    post :
+      summary: Loga um usuário na plataforma 
+      description: Loga um novo usuário na plataforma
+      tags:
+        - Auth
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                senha:
+                  type: string
+                
+      responses:
+        '200':
+          description: Resposta de sucesso na autenticação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirmAuth"
+
+        "500": 
+          description : Resposta de erro interno na autenticação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErrorAuth"
+      
 
 
 
@@ -219,6 +287,28 @@ components:
           type: string
         erro :
           type: string
+
+    responseConfirmAuth :
+      type: object
+      properties:
+        "success":
+          type: boolean
+        message: 
+          type: string
+        "token":
+          type: string
+        "user_id":
+          type: string
+    
+    responseErrorAuth :
+      type: object
+      properties:
+        "success":
+          type: boolean
+          example: false
+        message: 
+          type: string
+  
 
 
     bodyDefault :
