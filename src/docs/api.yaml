@@ -1,154 +1,583 @@
-openapi: 3.0.0
+openapi : 3.0.0
 info:
-  title: Artisphere API
-  description: API para gerenciamento de artigos.
-  version: "1.0.0"
+  title: Artisphere Api
+  description : API para criação , publicação e gerenciamento de artigos.
+  version: 1.0.0
+
+
 servers:
-  - url: http://localhost:3000
-    description: Servidor local para desenvolvimento
-paths:
+  - url: artisphere-api.onrender.com
+    description: Local de hospedagem da api e url base
+
+paths: 
+
+
   /articles:
+
     get:
-      summary: Listar todos os artigos
+      summary: Listar todos os artigos publicados.
       description: Retorna todos os artigos armazenados no banco de dados.
+      tags:
+        -  Articles
       responses:
         '200':
           description: Lista de artigos retornada com sucesso.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: ID do artigo.
-                    title:
-                      type: string
-                      description: Título do artigo.
-                    article:
-                      type: string
-                      description: Conteúdo do artigo.
-                    likes:
-                      type: integer
-                      description: Número de curtidas.
-                    imageUrl:
-                      type: string
-                      description: URL da imagem associada ao artigo.
+                $ref: "#/components/schemas/responseDefault"
 
-    post:
-      summary: Criar um novo artigo
-      description: Adiciona um novo artigo ao banco de dados.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: Título do artigo.
-                  example: "Meu novo artigo"
-                article:
-                  type: string
-                  description: Conteúdo do artigo.
-                  example: "Este é o conteúdo do artigo."
-                likes:
-                  type: integer
-                  description: Número inicial de curtidas.
-                  example: 0
-                imageUrl:
-                  type: string
-                  description: URL da imagem associada ao artigo.
-                  example: "https://example.com/image.jpg"
-      responses:
-        '201':
-          description: Artigo criado com sucesso.
+        "500": 
+          description : Erro interno no servidor
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: string 
+                    example: Error  
                   message:
+                    type: string  
+                    example: Error when get articles   
+                  erro : 
                     type: string
-                    example: "Item criado com sucesso"
+                    example: error
   
-  /articles/{id}:
-    put:
-      summary: Atualizar um artigo
-      description: Atualiza os detalhes de um artigo existente.
+    post:
+      summary: Publica um artigo
+      description: Criar um artigo que será salvo no banco de dados da aplicação.
+      tags:
+        -  Articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/bodyDefault"
+
+      responses:
+        '200':
+          description: Resposta de sucesso na criação do artigo. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirm"
+
+        "500": 
+          description : Resposta de erro interno na criação do artigo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+  /articles/{id}:  
+
+    put :
+      summary: Atualiza as informações de um artigo
+      description: Atualza as informações de um artigo que foi salvo no banco de dados da aplicação.
+      tags:
+        -  Articles
       parameters:
-        - name: id
-          in: path
+        - name : article_id
+          in : path
           required: true
           description: ID do artigo a ser atualizado.
           schema:
             type: string
+
       requestBody:
-        required: true
+        content:
+          application/json:
+            schema:
+              type : object
+              properties:
+                title:
+                  type: string
+                article:
+                  type: string
+                imageUrl:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type : string
+                    example: cada item do array deve ser o id da tag escolhida
+
+      responses:
+        '200':
+          description: Resposta de sucesso na atualização do artigo. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirm"
+
+        "500": 
+          description : Resposta de erro interno na atualização do artigo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+
+    delete:
+      summary: Exclui um artigo
+      description: Exclui as informações de um artigo que foi salvo no banco de dados da aplicação.
+      tags:
+        -  Articles
+      parameters:
+        - name : article_id
+          in : path
+          required: true
+          description: ID do artigo a ser excluido.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Resposta de sucesso na remoção do artigo. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirm"
+
+        "500": 
+          description : Resposta de erro interno na remoção do artigo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+      
+
+  /register :
+
+    post :
+      summary: Registra um usuário na plataforma 
+      description: Registra um novo usuário na plataforma
+      tags:
+        - Auth
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                senha:
+                  type: string
+                
+      responses:
+        '200':
+          description: Resposta de sucesso na criação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirmAuth"
+
+        "500": 
+          description : Resposta de erro interno na criação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErrorAuth"
+      
+
+  /login:
+
+    post :
+      summary: Loga um usuário na plataforma 
+      description: Loga um novo usuário na plataforma
+      tags:
+        - Auth
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                senha:
+                  type: string
+                
+      responses:
+        '200':
+          description: Resposta de sucesso na autenticação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirmAuth"
+
+        "500": 
+          description : Resposta de erro interno na autenticação de um novo usuário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErrorAuth"
+
+
+
+  /tags:
+
+    get:  
+      summary: Lista todas as tags já criadas 
+      description: Lista todas as tags que foram criadas no banco de dados
+      tags:
+        - Tags
+
+      responses:
+        '200':
+          description: Resposta de sucesso na listagem das tags. 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/tagBody"
+
+        "500": 
+          description : Resposta de erro interno na listagem das tags.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+
+    post:  
+      summary: Criar uma nova tag
+      description: Cria uma nova tag no banco de dados
+      tags:
+        - Tags
+
+      requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                title:
+                name:
                   type: string
-                  description: Título do artigo.
-                  example: "Título atualizado"
-                article:
+                color:
                   type: string
-                  description: Conteúdo do artigo.
-                  example: "Conteúdo atualizado do artigo."
-                likes:
-                  type: integer
-                  description: Número de curtidas.
-                  example: 42
-                imageUrl:
-                  type: string
-                  description: URL da imagem associada ao artigo.
-                  example: "https://example.com/new-image.jpg"
+
       responses:
         '200':
-          description: Artigo atualizado com sucesso.
+          description: Resposta de sucesso na criação da tags. 
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Artigo atualizado com sucesso"
-        '404':
-          description: Artigo não encontrado.
-        '400':
-          description: Erro ao atualizar o artigo.
-        '500':
-          description: Erro interno do servidor.
+                $ref: "#/components/schemas/responseConfirm"
 
+
+        "500": 
+          description : Resposta de erro interno na criação da tags. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+  
+
+  /comments:
+    post:
+      summary: Criar um comentário
+      description: Criar um comentário em um artigo.
+      tags:
+        - Comments
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/commentsBody"
+            
+      responses:
+        '200':
+          description: Resposta de sucesso na criação de um comentário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirm"
+
+
+        "500": 
+          description : Resposta de erro interno na criação de um comentário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+
+
+  /comments/{id}:
     delete:
-      summary: Remover um artigo
-      description: Remove um artigo pelo ID.
+      summary: Excluir um comentário
+      description: Excluir um comentário de um artigo.
+      tags:
+        - Comments
+
       parameters:
-        - name: id
+        - name : comments_id
           in: path
           required: true
-          description: ID do artigo a ser removido.
+          description: ID do comentário a ser excluido.
           schema:
             type: string
+
       responses:
         '200':
-          description: Artigo removido com sucesso.
+          description: Resposta de sucesso na exclusão de um comentário. 
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Item removido com sucesso!"
-        '404':
-          description: Artigo não encontrado.
-        '500':
-          description: Erro interno do servidor.
+                $ref: "#/components/schemas/responseConfirm"
+
+
+        "500": 
+          description : Resposta de erro interno na exclusão de um comentário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+
+    put:
+      summary: Atualizar um comentário
+      description: Atualizar um comentário de um artigo.
+      tags:
+        - Comments
+
+      parameters:
+        - name : comments_id
+          in: path
+          required: true
+          description: ID do comentário que sera atualizado.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Resposta de sucesso na atualização de um comentário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseConfirm"
+
+
+        "500": 
+          description : Resposta de erro interno na atualização de um comentário. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+
+
+  /mostRecent:
+
+    get:
+      summary: Requisição dos artigos mais recentes 
+      description: Requisição que retorna os artigos mais recentes. 
+      tags:
+        - Filter
+
+      responses:
+        '200':
+          description: Resposta de sucesso na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseDefault"
+
+
+        "500": 
+          description : Resposta de erro interno na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+
+  /mostRelevant:
+
+    get:
+      summary: Requisição dos artigos mais relevantes 
+      description: Requisição que retorna os artigos mais relevantes. 
+      tags:
+        - Filter
+
+      responses:
+        '200':
+          description: Resposta de sucesso na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseDefault"
+
+
+        "500": 
+          description : Resposta de erro interno na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+            
+  /mostPopular:
+
+    get:
+      summary: Requisição dos artigos mais populares 
+      description: Requisição que retorna os artigos mais populares.
+      tags:
+        - Filter
+
+      responses:
+        '200':
+          description: Resposta de sucesso na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseDefault"
+
+
+        "500": 
+          description : Resposta de erro interno na requisição.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseError"
+            
+
+
+components:
+  schemas:  
+    responseDefault:
+      type: array 
+      items:
+        type: object
+        properties:
+          id: 
+            type: string
+            format: uuid
+          person_id:
+            type: string
+            format: uuid
+          title:
+            type: string
+          article:
+            type: string
+          num_likes:
+            type: integer
+          num_comments:
+            type: integer
+          imageUrl:
+            type: string
+            format: url
+          TagsDBs:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                content:
+                  type: string
+                color:
+                  type: string
+          CommentsDbs:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                person_id:
+                  type: string
+                  format: uuid
+                article_id:
+                  type: string
+                  format: uuid
+                content:
+                  type: string
+
+
+    responseConfirm:
+      type: object
+      properties:
+        message :
+          type: string
+
+    responseError:
+      type: object
+      properties:
+        message :
+          type: string
+        erro :
+          type: string
+
+    responseConfirmAuth :
+      type: object
+      properties:
+        "success":
+          type: boolean
+        message: 
+          type: string
+        "token":
+          type: string
+        "user_id":
+          type: string
+    
+    responseErrorAuth :
+      type: object
+      properties:
+        "success":
+          type: boolean
+          example: false
+        message: 
+          type: string
+  
+
+
+    bodyDefault :
+      type : object
+      properties:
+        title:
+          type: string
+        article:
+          type: string
+        num_likes:
+            type: integer
+        num_comments:
+            type: integer
+        imageUrl:
+          type: string
+        tags:
+          type: array
+          items:
+            type : string
+            example: cada item do array deve ser o id da tag escolhida
+
+    tagBody:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        color:
+          type: string
+        content:
+          type: string
+
+    commentsBody:
+      type: object
+      properties:
+        article_id:
+          type: string
+          format: uuid
+        person_id:
+          type: string
+          format: uuid
+        content:
+          type: string
