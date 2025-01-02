@@ -37,7 +37,6 @@ ArticleDb.init({
     person_id : {
         type : DataTypes.TEXT,
         allowNull: false,
-
     },
 
     title: {
