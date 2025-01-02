@@ -7,6 +7,7 @@ import YAML from "yamljs"
 import RoutesTags from "./rotas/tags";
 import RouterComments from "./rotas/comments";
 import RouterFilter from "./rotas/filter";
+import insertSeeds from "./utils/insertSeeds";
 
 const server = express();
 server.use(express.json());
@@ -16,12 +17,12 @@ server.use("/" , RoutesTags);
 server.use("/" , RouterComments);
 server.use("/" , RouterFilter);
 
-
 // docs api
 const swaggerDocument = YAML.load('./src/docs/api.yaml');
 server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
 
-conexaoComBancoDeDados()
+conexaoComBancoDeDados();
+insertSeeds();
 
 server.listen(3000, () => {
     console.log("Estamos no ar meus amigos");
