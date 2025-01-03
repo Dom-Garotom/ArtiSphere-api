@@ -8,6 +8,7 @@ import RoutesTags from "./rotas/tags";
 import RouterComments from "./rotas/comments";
 import RouterFilter from "./rotas/filter";
 import insertSeeds from "./utils/insertSeeds";
+import cors from "cors"
 
 const server = express();
 server.use(express.json());
@@ -16,6 +17,7 @@ server.use("/", RoutesAuth);
 server.use("/" , RoutesTags);
 server.use("/" , RouterComments);
 server.use("/" , RouterFilter);
+server.use(cors())
 
 // docs api
 const swaggerDocument = YAML.load('./src/docs/api.yaml');
