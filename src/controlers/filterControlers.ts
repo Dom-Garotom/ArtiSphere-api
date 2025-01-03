@@ -13,10 +13,13 @@ export const getMostPopular = async (req: Request, res: Response) => {
         through: {
           attributes: []
         },
-        attributes: ["id", "content", "color"]
+        as: "tags",
+        attributes: ["id", "content", "color"],
       },
       {
         model: CommentsDb,
+        as: "comments",
+        attributes: ["id", "person_id", "article_id", "content"]
       }]
     });
     res.json(articles);
@@ -40,10 +43,13 @@ export const getMostRecent = async (req: Request, res: Response) => {
         through: {
           attributes: []
         },
-        attributes: ["id", "content", "color"]
+        as: "tags",
+        attributes: ["id", "content", "color"],
       },
       {
         model: CommentsDb,
+        as: "comments",
+        attributes: ["id", "person_id", "article_id", "content"]
       }]
     });
     res.json(articles);
@@ -67,10 +73,13 @@ export const getMostRelevant = async (req: Request, res: Response) => {
         through: {
           attributes: []
         },
-        attributes: ["id", "content", "color"]
+        as: "tags",
+        attributes: ["id", "content", "color"],
       },
       {
         model: CommentsDb,
+        as: "comments",
+        attributes: ["id", "person_id", "article_id", "content"]
       }]
     });
     res.json(articles);
