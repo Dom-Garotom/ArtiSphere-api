@@ -349,6 +349,15 @@ paths:
       tags:
         - Comments
 
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              type: object
+              properties:
+                content: 
+                  type : string
+
       parameters:
         - name : comments_id
           in: path

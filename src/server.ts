@@ -36,7 +36,7 @@ server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 conexaoComBancoDeDados();
 insertSeeds();
 
-server.listen(3003, () => {
+server.listen(3000, () => {
     console.log("Estamos no ar meus amigos");
     console.log(`Documentação disponível em http://localhost:3000/docs`)
 })
