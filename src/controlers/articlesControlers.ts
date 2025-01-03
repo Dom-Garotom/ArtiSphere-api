@@ -15,10 +15,13 @@ export const getArticles = async (req: Request, res: Response) => {
                 through: {
                     attributes: []
                 },
-                attributes: ["id", "content", "color"]
+                as:"tags",
+                attributes: ["id", "content", "color"],
             },
             {
                 model: CommentsDb,
+                as: "comments",
+                attributes: ["id" , "person_id" , "article_id", "content"]
             }]
         });
 

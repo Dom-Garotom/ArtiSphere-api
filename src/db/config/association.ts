@@ -7,7 +7,8 @@ import CommentsDb from '../models/commentsModels';
 ArticleDb.belongsToMany(TagsDB, {
     through: ArticleTagsDB, // Tabela intermediária
     foreignKey: 'article_id', // Campo na tabela intermediária para o ID do artigo
-    otherKey: 'tags_id' // Campo na tabela intermediária para o ID da tag
+    otherKey: 'tags_id' ,   // Campo na tabela intermediária para o ID da tag
+    as: "tags"
 });
 
 TagsDB.belongsToMany(ArticleDb, {
@@ -16,5 +17,5 @@ TagsDB.belongsToMany(ArticleDb, {
     otherKey: 'article_id' // Campo na tabela intermediária para o ID do artigo
 }); 
 
-ArticleDb.hasMany(CommentsDb, { foreignKey: "article_id" });
+ArticleDb.hasMany(CommentsDb, { foreignKey: "article_id" ,  as:"comments" });
 CommentsDb.belongsTo(ArticleDb, { foreignKey: "article_id" });
