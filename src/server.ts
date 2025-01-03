@@ -14,14 +14,18 @@ const server = express();
 server.use(express.json());
 server.use("/articles", RoutesArticles);
 server.use("/", RoutesAuth);
-server.use("/" , RoutesTags);
-server.use("/" , RouterComments);
-server.use("/" , RouterFilter);
-server.use(cors())
+server.use("/", RoutesTags);
+server.use("/", RouterComments);
+server.use("/", RouterFilter);
+server.use(cors({
+    origin: "*",
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}))
 
 // docs api
 const swaggerDocument = YAML.load('./src/docs/api.yaml');
-server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
+server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 conexaoComBancoDeDados();
 insertSeeds();
