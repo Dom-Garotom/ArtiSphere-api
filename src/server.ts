@@ -12,16 +12,22 @@ import cors from "cors"
 
 const server = express();
 server.use(express.json());
-server.use("/articles", RoutesArticles);
-server.use("/", RoutesAuth);
-server.use("/", RoutesTags);
-server.use("/", RouterComments);
-server.use("/", RouterFilter);
+
 server.use(cors({
     origin: "*",
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }))
+
+server.options("*" , cors())
+
+server.use(express.json())
+
+server.use("/articles", RoutesArticles);
+server.use("/", RoutesAuth);
+server.use("/", RoutesTags);
+server.use("/", RouterComments);
+server.use("/", RouterFilter);
 
 // docs api
 const swaggerDocument = YAML.load('./src/docs/api.yaml');
@@ -30,7 +36,7 @@ server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 conexaoComBancoDeDados();
 insertSeeds();
 
-server.listen(3000, () => {
+server.listen(3003, () => {
     console.log("Estamos no ar meus amigos");
     console.log(`Documentação disponível em http://localhost:3000/docs`)
 })
