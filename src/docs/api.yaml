@@ -43,7 +43,8 @@ paths:
                   erro : 
                     type: string
                     example: error
-  
+
+  /articles/create/:{person_id}:
     post:
       summary: Publica um artigo
       description: Criar um artigo que será salvo no banco de dados da aplicação.
@@ -53,7 +54,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/bodyDefault"
+              type : object
+              properties:
+                title:
+                  type: string
+                article:
+                  type: string
+                imageUrl:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type : string
+                    example: cada item do array deve ser o id da tag escolhida
 
       responses:
         '200':
@@ -70,7 +83,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/responseError"
 
-  /articles/{id}:  
+  /articles/update/:{person_id}: 
 
     put :
       summary: Atualiza as informações de um artigo
@@ -118,6 +131,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/responseError"
 
+  /articles/delete/:{person_id}:
 
     delete:
       summary: Exclui um artigo
