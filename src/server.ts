@@ -10,18 +10,18 @@ import RouterFilter from "./rotas/filter";
 import insertSeeds from "./utils/insertSeeds";
 import cors from "cors"
 
-const server = express();
-server.use(express.json());
-
-server.use(cors({
+const corsOptions = {
     origin: "*",
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}))
+}
 
-server.options("*" , cors())
+const server = express();
+server.use(express.json());
 
-server.use(express.json())
+server.use(cors(corsOptions))
+
+server.options( "*" , cors(corsOptions))
 
 server.use("/articles", RoutesArticles);
 server.use("/", RoutesAuth);
