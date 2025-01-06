@@ -39,15 +39,15 @@ export const createArticles = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const articleId = uuidv4();
-        const { article, title, imageUrl, num_likes, num_comments, tags }: Articles = req.body
+        const { article, title, imageUrl, tags }: Articles = req.body
 
         const dataArticle = {
             id: articleId,
             person_id: id,
             title,
             article,
-            num_likes,
-            num_comments,
+            num_likes : 0,
+            num_comments : 0,
             imageUrl,
         }
 

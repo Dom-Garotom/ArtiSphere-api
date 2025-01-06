@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { articleSchema, createArticleSchema } from "../schemas/articlesSchema"
+import { createArticleSchema } from "../schemas/articlesSchema"
 import { z } from "zod";
 
 export const middlewareUpdateArticle = (req: Request, res: Response, next: NextFunction) => {
