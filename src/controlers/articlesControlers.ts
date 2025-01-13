@@ -35,6 +35,40 @@ export const getArticles = async (req: Request, res: Response) => {
     }
 }
 
+
+export const getArticlesById = async (req: Request, res: Response) => {
+    try {
+        const { articleID } = req.params
+        const db = await ArticleDb.findAll({
+            where : {
+                id : articleID 
+            },
+            include: [{
+                model: TagsDB,
+                through: {
+                    attributes: []
+                },
+                as:"tags",
+                attributes: ["id", "content", "color"],
+            },
+            {
+                model: CommentsDb,
+                as: "comments",
+                attributes: ["id" , "person_id" , "article_id", "content"]
+            }]
+        });
+
+        res.status(200).json(db)
+    } catch (error) {
+        res.status(502).json({
+            status: "Error",
+            message: "Error when get article ",
+            erro : error
+        })
+    }
+}
+
+
 export const createArticles = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

@@ -44,6 +44,38 @@ paths:
                     type: string
                     example: error
 
+  /articles/:{articleId}:
+
+    get:
+      summary: Procura um artigo baseado no seu artigo.
+      description: Retorna o artigos que está sendo procurado pelo seu id que está armazenados no banco de dados.
+      tags:
+        -  Articles
+      responses:
+        '200':
+          description: Lista o artigo retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseDefault"
+
+        "500": 
+          description : Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string 
+                    example: Error  
+                  message:
+                    type: string  
+                    example: Error when get articles   
+                  erro : 
+                    type: string
+                    example: error
+
   /articles/create/:{person_id}:
     post:
       summary: Publica um artigo
